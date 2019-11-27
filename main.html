@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>贪吃蛇</title>
+</head>
+<body>
+  <button id='switch'>开始</button>
+  <button id='reswitch'>重新开始</button>
+  <!-- <button id='switch' onclick='switchGame()'>开始</button> -->
+  <canvas id='myCanvas'></canvas>
+  <div class="scoreboard">
+    <div class="s-score">score: 0</div>
+    <div class="s-speed">speed: 1</div>
+  </div>
+  <script type='module'>
+    import Game from './main.js'
+    let canvas = document.querySelector('#myCanvas')
+    let game = new Game(canvas)
+    game.initGame()
+    let switchButton = document.querySelector('#switch')
+    let reSwitchButton = document.querySelector('#reswitch')
+    switchButton.onclick = function() {
+      game._switchGame()
+    }
+    reSwitchButton.onclick = function() {
+      game.initGame()
+    }
+  </script>
+</body>
+</html>
