@@ -4,33 +4,38 @@ export default class Game {
     this._registerMoveAction()
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
-    this.__WIDTH = 500
-    this.__HEIGHT = 500
-    this.__GRIDNUM = 25
-    this.__FPS = 4
-    this.__SPEED = 1
+    this.__WIDTH = 600
+    this.__HEIGHT = 600
+    this.__GRIDNUM = 30
     this.__GRIDWIDTH = this.__WIDTH / this.__GRIDNUM
     this.isStop = !0
-    this.snake = []
-    this.direction = 1
-    this.timer = ''
-    this.score = 0
-    this.nextDirection = this.direction
   }
   initGame() {
     this.canvas.setAttribute('width', this.__WIDTH)
     this.canvas.setAttribute('height', this.__HEIGHT)
+    this.initData()
     this._initBg()
     this._initFood()
     this._initSnake()
     let btn = document.querySelector('#switch')
     btn.style.display = 'inline-block'
   }
+  initData() {
+    this.__SPEED = 1
+    this.snake = []
+    this.direction = 1
+    this.timer = ''
+    this.score = 0
+    this.nextDirection = this.direction
+    let scoreBoard = document.querySelector('.s-score')
+    scoreBoard.innerHTML = 'score:' + this.score
+    let speedBoard = document.querySelector('.s-speed')
+    speedBoard.innerHTML = 'speed:' + this.__SPEED
+  }
   _initSnake() {
     let startPoint = this._getRandomPos(this.__WIDTH / this.__GRIDNUM - 1, this.__HEIGHT / this.__GRIDNUM - 1);
     let nextPoint = this._calNextPos(startPoint)
     this.snake = [startPoint, nextPoint]
-    console.log(this.snake)
     this._drawSnake()
   }
   _snakeMove() {
@@ -52,7 +57,6 @@ export default class Game {
     let scoreBoard = document.querySelector('.s-score')
     scoreBoard.innerHTML = 'score:' + this.score
     this.__SPEED = Math.ceil(this.score / 2) > 5 ? 5 : Math.ceil(this.score / 2)
-    console.log(this.__SPEED)
     let speedBoard = document.querySelector('.s-speed')
     speedBoard.innerHTML = 'speed:' + this.__SPEED
   }
@@ -82,7 +86,6 @@ export default class Game {
       return v[0] == point[0] && v[1] == point[1]})    
   }
   _stopGame() {
-    console.log('游戏结束')
     this._switchGame()
     let btn = document.querySelector('#switch')
     btn.style.display = 'none'
@@ -100,10 +103,10 @@ export default class Game {
     switch(this.direction){
       case 1:
           nextPoint = [point[0] + 1, point[1]]
-          break
+          break;
       case 2:
           nextPoint = [point[0], point[1] + 1]
-          break
+          break;
       case -1:
           nextPoint = [point[0] - 1, point[1]]
           break
@@ -127,9 +130,6 @@ export default class Game {
     ctx.stroke();
   }
   _drawCell(pos, type = "draw") {
-    if (type == 'danger') {
-      console.log('红色!!!')
-    }
     let typeMap = {
       clean: '#fff',
       draw: 'black',
@@ -160,28 +160,27 @@ export default class Game {
     let _this = this
 		document.addEventListener('keydown', function(e) {
 			switch(e.keyCode){
+        //左
 				case 37:
-          log('arrow_left')
 					_this._changeDirection(-1)
-					break;
+          break;
+        // 上
 				case 38:
-					log('arrow_top')
 					_this._changeDirection(-2)
-					break;
+          break;
+        // 右
 				case 39:
-					log('arrow_right')
 					_this._changeDirection(1)
-					break;
+          break;
+        // 下
 				case 40:
-					log('arrow_down')
 					_this._changeDirection(2)
-					break;
-				
+					break;	
 			}
 		}, false)
   }
   _changeDirection(direction) {
-    if(direction + this.direction == 0) return
+    if (direction + this.direction == 0) return
     this.nextDirection = direction
   }
   _isInArray(arr, point) {
